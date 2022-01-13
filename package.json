@@ -1,6 +1,6 @@
 {
   "name": "@projectcosmic/eslint-config-drupal",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "ESLint config synced with Drupal core.",
   "main": "index.js",
   "scripts": {
