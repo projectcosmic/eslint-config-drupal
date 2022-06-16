@@ -98,7 +98,7 @@ get('https://updates.drupal.org/release-history/drupal/current')
   .then(parseStringPromise)
   .then((data) =>
     data.project.releases[0].release
-      .filter(({ tag: [tag] }) => /(\d+\.){2}\d+/.test(tag))
+      .filter(({ tag: [tag] }) => /^(\d+\.){2}\d+$/.test(tag))
       .slice(0, 1)
       .forEach(async ({ tag: [tag] }) => {
         console.log(`Syncing for version ${tag}`);
