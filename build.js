@@ -70,6 +70,20 @@ const setESlintConfig = async (tag) =>
   );
 
 /**
+ * Filter a dictionary of dependencies in package.json.
+ *
+ * @param {Object<string,string>} dependencies The dependencies to filter.
+ * @param {boolean} [match=true] Whether to return matches or non-matches.
+ * @return {Object<string,string>} The filtered subset of dependencies.
+ */
+const filterESlintPackages = (dependencies, match = true) =>
+  Object.fromEntries(
+    Object.entries(dependencies).filter(
+      ([packageName]) => match === /^eslint(-.+)?/.test(packageName),
+    ),
+  );
+
+/**
  * Updates the eslint dependencies.
  *
  * @param {string} tag The tag name to use.
@@ -80,16 +94,14 @@ const setESLintDependencies = async (tag) => {
       `https://git.drupalcode.org/project/drupal/-/raw/${tag}/core/package.json`,
     ),
   );
-  const eslintDependencies = Object.fromEntries(
-    Object.entries(drupalPackage.devDependencies).filter(([name]) =>
-      /^eslint(-.+)?/.test(name),
-    ),
+  const eslintDependencies = filterESlintPackages(
+    drupalPackage.devDependencies,
   );
 
   selfPackage.peerDependencies = eslintDependencies;
   selfPackage.devDependencies = {
     ...eslintDependencies,
-    ...selfPackage.devDependencies,
+    ...filterESlintPackages(selfPackage.devDependencies, false),
   };
   fs.writeFile('package.json', JSON.stringify(selfPackage, undefined, 2));
 };
