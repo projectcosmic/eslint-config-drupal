@@ -87,7 +87,10 @@ const setESLintDependencies = async (tag) => {
     ),
   );
 
-  fs.writeFile('package.json', JSON.stringify(selfPackage, undefined, 2));
+  fs.writeFile(
+    'package.json',
+    `${JSON.stringify(selfPackage, undefined, 2)}\n`,
+  );
 };
 
 get('https://updates.drupal.org/release-history/drupal/current')
