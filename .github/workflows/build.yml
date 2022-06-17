@@ -22,7 +22,7 @@ jobs:
           echo "::set-output name=version::$(npm run build --silent -- --plain)"
           npm update
           lint_result="$(npm run lint --silent)"
-          echo "::set-output name=lint_result::$(if test -n $lint_result; then echo $lint_result; else echo 'No linting errors.'; fi)"
+          echo "::set-output name=lint_result::$(if test -n $lint_result; then echo 'No linting errors.'; else echo $lint_result; fi)"
       - uses: peter-evans/create-pull-request@v4
         with:
           add-paths: |
