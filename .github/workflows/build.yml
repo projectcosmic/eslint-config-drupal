@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - name: Build
+        id: build
+        run: |
+          npm install
+          echo "::set-output name=version::$(npm run build --silent -- --plain)"
+          npm update
+          lint_result="$(npm run lint --silent)"
+          echo "::set-output name=lint_result::$(if test -n $lint_result; then echo $lint_result; else echo 'No linting errors.'; fi)"
+      - uses: peter-evans/create-pull-request@v4
+        with:
+          add-paths: |
+            .eslintrc.json
+            package-lock.json
+            package.json
+          commit-message: Sync for Drupal ${{ steps.build.outputs.version }}
+          branch: build/${{ steps.build.outputs.version }}
+          title: Sync for Drupal ${{ steps.build.outputs.version }}
+          body: |
+            ${{ steps.build.outputs.lint_result }}
+
+            [See run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          reviewers: wongjn

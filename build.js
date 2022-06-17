@@ -97,9 +97,13 @@ get('https://updates.drupal.org/release-history/drupal/current')
       .filter(({ tag: [tag] }) => /^(\d+\.){2}\d+$/.test(tag))
       .slice(0, 1)
       .forEach(async ({ tag: [tag] }) => {
-        console.log(`Syncing for version ${tag}`);
         setESlintConfig(tag);
         setESLintDependencies(tag);
+
+        const prefix = process.argv.slice(2).includes('--plain')
+          ? ''
+          : 'Sync for Drupal ';
+        console.log(`${prefix}${tag}`);
       }),
   )
   .catch((error) => console.error(error));
