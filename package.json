@@ -24,7 +24,7 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jquery": "^1.5.1",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-yml": "^0.14.0"
+    "eslint-plugin-yml": "^1.2.0"
   },
   "devDependencies": {
     "xml2js": "^0.4.23"
