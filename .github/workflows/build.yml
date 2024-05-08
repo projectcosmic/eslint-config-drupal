@@ -19,10 +19,10 @@ jobs:
         id: build
         run: |
           npm install
-          echo "::set-output name=version::$(npm run build --silent -- --plain)"
+          echo "version=$(npm run build --silent -- --plain)" >> $GITHUB_OUTPUT
           npm update
           lint_result="$(npm run lint --silent)"
-          echo "::set-output name=lint_result::$(if test -n $lint_result; then echo 'No linting errors.'; else echo $lint_result; fi)"
+          echo "lint_result=$(if test -n $lint_result; then echo 'No linting errors.'; else echo $lint_result; fi)" >> $GITHUB_OUTPUT
       - uses: peter-evans/create-pull-request@v4
         with:
           add-paths: |
